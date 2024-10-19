@@ -48,6 +48,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       if ($stmt->execute()) {
           // 登録成功
+
+          // 登録したスポットのIDを取得
+        $spot_id = $pdo->lastInsertId();
+
+        // フィード投稿処理
+        $feedContent = "{$spot_name}をお気に入りに登録しました！"; 
+        $sql = "INSERT INTO feeds (user_id, content, spot_id) VALUES (:user_id, :content, :spot_id)"; // spot_id を追加
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->bindValue(':content', $feedContent, PDO::PARAM_STR);
+        $stmt->bindValue(':spot_id', $spot_id, PDO::PARAM_INT); // spot_id をバインド
+        $stmt->execute();
+
           header('Location: main.php'); 
           exit;
       } else {
@@ -58,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $error_message = "データベースエラー: " . $e->getMessage();
   }
 }
+
 ?>
 
 <!DOCTYPE html>

@@ -13,15 +13,18 @@ require_once 'includes/db_connect.php';
 // APIキー設定を読み込む
 require_once 'includes/api_keys.php'; 
 
-// スポット情報をデータベースから取得 (全ユーザー分)
+// ログインユーザーのお気に入りスポット情報を取得
 try {
-    $sql = "SELECT * FROM spots"; // WHERE句を削除
+    $sql = "SELECT * FROM spots WHERE user_id = :user_id"; // ログインユーザーのuser_idを指定
     $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
     $stmt->execute();
-    $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    $error_message = "データベースエラー: " . $e->getMessage();
-}
+    $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+  } catch (PDOException $e) {
+      $error_message = "データベースエラー: " . $e->getMessage();
+  }
+
+
 
 ?>
 
@@ -51,14 +54,34 @@ try {
 </head>
 <body>
     <h1>メインページ</h1>
+    <p>ようこそ！</p>
+    <a href="spot_register.php">スポット登録</a>
+    <a href="logout.php">ログアウト</a><div></div>
 
     <input type="text" id="search-box" placeholder="お店の名前などを検索"> 
 
     <div id="map"></div> 
 
-    <p>ようこそ！</p>
-    <a href="spot_register.php">スポット登録</a>
-    <a href="logout.php">ログアウト</a>
+
+
+
+
+    <div id="favorite-list">
+  <h2>お気に入りスポット</h2>
+    <?php if (!empty($favorites)): ?>
+        <ul>
+            <?php foreach ($favorites as $favorite): ?>
+                <li>
+                    <a href="spot_detail.php?id=<?php echo $favorite['spot_id']; ?>">
+                        <?php echo $favorite['spot_name']; ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <p>まだお気に入りは登録されていません。</p>
+    <?php endif; ?>
+</div>
 
 
     <nav>

@@ -15,9 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $content = $_POST['content'];
     $user_id = $_SESSION['user_id'];
 
-    // 入力値のバリデーション (必要であれば)
-    // ...
-
     try {
         // フィードをデータベースに登録
         $sql = "INSERT INTO feeds (user_id, content) VALUES (:user_id, :content)";
@@ -41,9 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // フィード取得処理
 try {
-    $sql = "SELECT f.*, u.username 
-            FROM feeds f 
-            INNER JOIN users u ON f.user_id = u.user_id 
+    $sql = "SELECT f.*, u.username, s.spot_name, s.category, s.address, s.comment 
+            FROM feeds f
+            INNER JOIN users u ON f.user_id = u.user_id
+            LEFT JOIN spots s ON f.spot_id = s.spot_id 
             ORDER BY f.created_at DESC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
@@ -51,47 +49,60 @@ try {
 } catch (PDOException $e) {
     $error_message = "データベースエラー: " . $e->getMessage();
 }
+
+
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-<link rel="stylesheet" href="styles/style.css"> 
-    <title>フィード</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <link rel="stylesheet" href="styles/style.css"> 
+  <title>フィード</title>
 </head>
 <body>
 
-    <h1>フィード</h1>
+  <nav>
+    <a href="main.php" <?php if (basename($_SERVER['PHP_SELF']) == 'main.php') echo 'class="active"'; ?>>メイン</a>
+    <a href="feed.php" <?php if (basename($_SERVER['PHP_SELF']) == 'feed.php') echo 'class="active"'; ?>>フィード</a>
+    <a href="collecting.php" <?php if (basename($_SERVER['PHP_SELF']) == 'collecting.php') echo 'class="active"'; ?>>コレクション</a>
+  </nav>
 
-    <!-- フィード投稿エリア -->
-    <form method="post" action="feed.php">
-        <textarea name="content" placeholder="つぶやきを入力"></textarea><br>
-        <input type="submit" value="投稿">
-    </form>
+  <h1>フィード</h1>
 
-    <!-- フィード表示エリア -->
-    <div id="feed-container">
-        <?php foreach ($feeds as $feed): ?>
-            <div class="feed-item">
-                <p><strong><?php echo htmlspecialchars($feed['username']); ?></strong></p>
-                <p><?php echo htmlspecialchars($feed['content']); ?></p>
-                <p><?php echo htmlspecialchars($feed['created_at']); ?></p>
-            </div>
-        <?php endforeach; ?>
-    </div>
+  <!-- フィード投稿エリア -->
+  <form method="post" action="feed.php">
+    <textarea name="content" placeholder="つぶやきを入力"></textarea><br>
+    <input type="submit" value="投稿">
+  </form>
 
-    <nav>
-    <a href="main.php" <?php if (basename($_SERVER['PHP_SELF']) == 'main.php') echo 'class="active"'; ?>>
-    <i class="fas fa-home"></i> メイン
-  </a>
-  <a href="feed.php" <?php if (basename($_SERVER['PHP_SELF']) == 'feed.php') echo 'class="active"'; ?>>
-    <i class="fas fa-rss"></i> フィード
-  </a>
-  <a href="collecting.php" <?php if (basename($_SERVER['PHP_SELF']) == 'collecting.php') echo 'class="active"'; ?>>
-    <i class="fas fa-trophy"></i> コレクション
-  </a>
-</nav>
+  <!-- フィード表示エリア -->
+  <div id="feed-container">
+    <?php foreach ($feeds as $feed): ?>
+      <div class="feed-item">
+        <p>
+          <strong>
+            <a href="user_page.php?id=<?php echo htmlspecialchars($feed['user_id']); ?>">
+              <?php echo htmlspecialchars($feed['username']); ?> さん 
+            </a>
+          </strong>
+        </p>
+        <?php if (!empty($feed['spot_id'])): ?>
+        <p>
+          スポット: 
+          <a href="spot_detail.php?id=<?php echo htmlspecialchars($feed['spot_id']); ?>">
+            <?php echo htmlspecialchars($feed['spot_name']); ?>
+          </a> 
+          (<?php echo htmlspecialchars($feed['category']); ?>)
+        </p>
+        <p>住所: <?php echo htmlspecialchars($feed['address']); ?></p>
+        <p>口コミ: <?php echo htmlspecialchars($feed['comment']); ?></p>
+        <?php endif; ?>
+        <p><?php echo htmlspecialchars($feed['content']); ?></p> 
+        <p><?php echo htmlspecialchars($feed['created_at']); ?></p>
+      </div>
+    <?php endforeach; ?>
+  </div>
 
 </body>
 </html>

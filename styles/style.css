@@ -94,3 +94,67 @@ nav {
   .tab-content.active {
     display: block; 
   }
+
+
+
+  /* styles/style.css */
+
+.feed-item {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    border-radius: 5px; /* 角丸 */
+  }
+  
+  .feed-item strong {
+    font-weight: bold;
+    font-size: 16px; /* ユーザー名に大きなフォントサイズ */
+    margin-right: 10px; /* スポット名とのスペース */
+  }
+  
+  
+  .feed-item a {
+    text-decoration: none;
+    color: #007bff; /* リンクの色 */
+  }
+  
+  .feed-item p {
+    margin: 5px 0;
+  }
+
+
+  .feed-item img {
+    max-width: 200px; /* 画像の最大幅 */
+    height: auto; 
+    margin-bottom: 10px;
+  }
+
+
+  .feed-item h3 {
+    margin-top: 0; /* 見出しとテキストのスペースを調整 */
+  }
+
+
+
+#favorite-list {
+    margin-top: 20px;  /* 見た目を整える余白 */
+    border: 1px solid #ccc;  /* 見た目を整える境界線 */
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
+#favorite-list ul {
+    list-style: none; /* リストマーカーを除去 */
+    padding: 0;
+    margin: 0;
+}
+
+#favorite-list li {
+    margin-bottom: 5px;
+}
+
+#favorite-list a {
+    color: #337ab7;
+    text-decoration: none;
+}
