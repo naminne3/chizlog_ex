@@ -33,6 +33,7 @@ if ($spot_id) {
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <title>スポット詳細</title>
 </head>
 <body>
@@ -41,6 +42,6 @@ if ($spot_id) {
   <p>コメント: <?php echo htmlspecialchars($spot['comment']); ?></p>
   <p>登録ユーザー: <?php echo htmlspecialchars($spot['user_id']); ?></p> 
 
-  <a href="main.php">メインに戻る</a>
+  <a href="main.php" onclick="history.pushState(null, null, 'main.php'); initMap(); return false;">メインに戻る</a>
 </body>
 </html>

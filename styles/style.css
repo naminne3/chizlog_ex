@@ -1,0 +1,96 @@
+/* styles/style.css */
+
+nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff; /* 背景色 */
+    border-top: 1px solid #ddd; /* 上部の境界線 */
+    display: flex; /* フレックスボックス */
+    justify-content: space-around; /* リンクを均等に配置 */
+  }
+  
+  nav a {
+    display: flex;
+    flex-direction: column; /* アイコンとテキストを縦に配置 */
+    align-items: center; /* アイコンとテキストを中央揃え */
+    padding: 10px;
+    text-decoration: none;
+    color: #555; /* リンクの色 */
+    font-weight: bold;
+  }
+  
+  nav a.active {
+    color: #007bff; /* アクティブなリンクの色 */
+  }
+  
+  nav i {
+    font-size: 24px; /* アイコンのサイズ */
+    margin-bottom: 5px; /* アイコンとテキストの間隔 */
+  }
+
+
+
+
+  /* スマホ画面サイズ (768px以下) の場合 */
+@media (max-width: 768px) {
+    /* ナビゲーションバーのスタイル */
+    nav {
+      font-size: 14px; /* 文字サイズを小さく */
+    }
+  
+    nav i {
+      font-size: 20px; /* アイコンサイズを小さく */
+    }
+  
+    /* その他の要素のスタイル */
+   
+  }
+
+
+
+  /* styles/style.css */
+
+#badge-container img,
+#coloring-container img {
+  width: 100%; /* 画像の幅を100%にする */
+  height: auto; /* 高さは自動調整 */
+}
+
+
+/* styles/style.css */
+
+nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff; 
+    border-top: 1px solid #ddd; 
+    display: flex; 
+    justify-content: space-around; 
+  }
+  
+  nav a {
+    display: inline-block;
+    text-align: center;
+    width: 33.33%; 
+    padding: 10px;
+    text-decoration: none;
+    color: #555; 
+    font-weight: bold;
+  }
+  
+  nav a.active {
+    color: #007bff; 
+  }
+  
+  .tab-content {
+    display: none; 
+    padding: 20px;
+  }
+  
+  .tab-content.active {
+    display: block; 
+  }

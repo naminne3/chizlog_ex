@@ -67,6 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $google_maps_api_key; ?>&callback=initMap&libraries=places&v=weekly" async defer></script>
   <script src="script_register.js" defer></script> 
+  <link rel="stylesheet" href="styles/style.css"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <style>
     /* 地図とフォームのスタイル (必要であれば) */
     #map {
@@ -109,5 +111,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </form>
 
 <a href="main.php">メインに戻る</a>
+<nav>
+  <a href="main.php" <?php if (basename($_SERVER['PHP_SELF']) == 'main.php') echo 'class="active"'; ?>>
+    <i class="fas fa-home"></i> メイン
+  </a>
+  <a href="feed.php" <?php if (basename($_SERVER['PHP_SELF']) == 'feed.php') echo 'class="active"'; ?>>
+    <i class="fas fa-rss"></i> フィード
+  </a>
+  <a href="collecting.php" <?php if (basename($_SERVER['PHP_SELF']) == 'collecting.php') echo 'class="active"'; ?>>
+    <i class="fas fa-trophy"></i> コレクション
+  </a>
+</nav>
 </body>
 </html>
